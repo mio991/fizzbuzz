@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const rxjs_1 = require("rxjs");
+const operators_1 = require("rxjs/operators");
+const numbers = rxjs_1.timer(0, 0).pipe(operators_1.skip(1));
+const fizzes = numbers.pipe(operators_1.map(i => (i % 3 ? "" : "Fizz")));
+const buzzes = numbers.pipe(operators_1.map(i => (i % 5 ? "" : "Buzz")));
+const fizzBuzzes = rxjs_1.zip(fizzes, buzzes).pipe(operators_1.map(([fizz, buzz]) => fizz + buzz));
+const result = rxjs_1.zip(numbers, fizzBuzzes).pipe(operators_1.map(([number, fizzBuzz]) => fizzBuzz || number.toFixed()));
+result.pipe(operators_1.take(100)).subscribe(console.log);
